@@ -1,5 +1,6 @@
 -- Credit to Steamo (https://github.com/Steamopollys/Steamodded/blob/main/core/core.lua)
 function MP.UTILS.wrapText(text, maxChars)
+	if text == nil then return "" end
 	local wrappedText = ""
 	local currentLineLength = 0
 
@@ -17,6 +18,7 @@ function MP.UTILS.wrapText(text, maxChars)
 end
 
 function MP.UTILS.string_split(inputstr, sep)
+	if inputstr == nil then return {} end
 	if sep == nil then sep = "%s" end
 	local t = {}
 	for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do

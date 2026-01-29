@@ -35,6 +35,7 @@ MP.INSANE_INT.from_string = function(str)
 end
 
 MP.INSANE_INT.to_string = function(insane_int_display)
+	if insane_int_display == nil then return "0" end
 	local e = ""
 	for i = 1, insane_int_display.e_count do
 		e = e .. "e"
@@ -51,6 +52,7 @@ end
 -- This doesn't really fit with the comment at the top,
 -- but I needed a way to compare highscores without storing this value seperately for no reason
 MP.INSANE_INT.greater_than = function(insane_int_display1, insane_int_display2)
+	if insane_int_display1 == nil or insane_int_display2 == nil then return false end
 	if insane_int_display1.e_count ~= insane_int_display2.e_count then
 		return tonumber(insane_int_display1.e_count) > tonumber(insane_int_display2.e_count)
 	end
@@ -68,6 +70,8 @@ end
 -- but we use math.pow just in case
 ---@diagnostic disable: deprecated
 MP.INSANE_INT.add = function(insane_int_display1, insane_int_display2)
+	if insane_int_display1 == nil then return insane_int_display2 or MP.INSANE_INT.empty() end
+	if insane_int_display2 == nil then return insane_int_display1 end
 	local starting_e_count
 	local coeffiocient
 	local exponent

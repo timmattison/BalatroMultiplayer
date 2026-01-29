@@ -208,6 +208,7 @@ end
 -- I don't like the fact that we have to do this twice
 
 local function get_culled(_pool)
+	if _pool == nil then return {} end
 	local culled = {}
 	for i = 1, #_pool, 2 do
 		local first = _pool[i]
@@ -337,6 +338,10 @@ function CardArea:shuffle(_seed)
 		local tables = {}
 
 		for i, v in ipairs(self.cards) do -- give each card a value based on current enhancement/seal/edition
+			-- Skip cards with missing config or base to avoid crashes
+			if not v.config or not v.base then
+				return orig_shuffle(self, _seed)
+			end
 			v.mp_stdval = 0 + (centers[v.config.center_key] or 0)
 			v.mp_stdval = v.mp_stdval + (seals[v.seal or "nil"] or 0)
 			v.mp_stdval = v.mp_stdval + (editions[v.edition and v.edition.type or "nil"] or 0)
@@ -381,6 +386,10 @@ function pseudorandom_element(_t, seed, args)
 			local keys = {}
 			for k, v in pairs(_t) do
 				keys[#keys + 1] = { k = k, v = v }
+				-- Safely access nested key, fall back to original function if missing
+				if not v.config or not v.config.center then
+					return orig_pseudorandom_element(_t, seed, args)
+				end
 				local key = v.config.center.key
 				tables[key] = tables[key] or {}
 				tables[key][#tables[key] + 1] = v
@@ -388,7 +397,10 @@ function pseudorandom_element(_t, seed, args)
 			local true_seed = pseudorandom(seed or math.random())
 			for k, v in pairs(tables) do
 				table.sort(v, function(a, b)
-					return a.sort_id < b.sort_id
+					-- Handle nil sort_id by treating nil as 0
+					local a_sort = a.sort_id or 0
+					local b_sort = b.sort_id or 0
+					return a_sort < b_sort
 				end) -- oldest joker (lowest sort_id) first
 				local mega_seed = k .. true_seed
 				for i, card in ipairs(v) do
@@ -399,6 +411,11 @@ function pseudorandom_element(_t, seed, args)
 			table.sort(keys, function(a, b)
 				return a.v.mp_shuffleval > b.v.mp_shuffleval
 			end)
+
+			-- Handle empty table case to avoid nil access
+			if #keys == 0 then
+				return orig_pseudorandom_element(_t, seed, args)
+			end
 
 			local key = keys[1].k
 			return _t[key], key

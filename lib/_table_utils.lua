@@ -36,6 +36,7 @@ end
 
 -- Used only for some UI blob, can be moved
 function MP.UTILS.get_array_index_by_value(options, value)
+	if options == nil then return nil end
 	for i, v in ipairs(options) do
 		if v == value then return i end
 	end
@@ -43,6 +44,7 @@ function MP.UTILS.get_array_index_by_value(options, value)
 end
 
 function MP.UTILS.reverse_key_value_pairs(tbl, stringify_keys)
+	if tbl == nil then return {} end
 	local reversed_tbl = {}
 	for k, v in pairs(tbl) do
 		if stringify_keys then v = tostring(v) end
@@ -52,6 +54,7 @@ function MP.UTILS.reverse_key_value_pairs(tbl, stringify_keys)
 end
 
 function MP.UTILS.shallow_copy(t)
+	if t == nil then return {} end
 	local copy = {}
 	for k, v in pairs(t) do
 		copy[k] = v
@@ -60,6 +63,8 @@ function MP.UTILS.shallow_copy(t)
 end
 
 function MP.UTILS.merge_tables(t1, t2)
+	if t1 == nil then t1 = {} end
+	if t2 == nil then t2 = {} end
 	local copy = MP.UTILS.shallow_copy(t1)
 	for k, v in pairs(t2) do
 		copy[k] = v
