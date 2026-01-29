@@ -28,7 +28,7 @@ SMODS.Challenge({
 })
 
 local function get_area(card)
-	if not card then return end
+	if not card or not card.config or not card.config.center then return nil end
 	if card.config.center.set == "Joker" then
 		return G.jokers
 	elseif card.config.center.consumeable then
@@ -39,6 +39,7 @@ end
 
 local function get_pos(card)
 	local area = get_area(card)
+	if not area or not area.cards then return nil end
 	for i, v in ipairs(area.cards) do
 		if card == v then return i end
 	end

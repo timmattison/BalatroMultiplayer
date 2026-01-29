@@ -133,7 +133,9 @@ function reset_mail_rank()
 
 		-- Sort by count desc, then value asc
 		table.sort(valid_ranks, function(a, b)
-			if a.count ~= b.count then return a.count > b.count end
+			local a_count = count_map[a.value].count
+			local b_count = count_map[b.value].count
+			if a_count ~= b_count then return a_count > b_count end
 			return value_order[a.value] < value_order[b.value]
 		end)
 

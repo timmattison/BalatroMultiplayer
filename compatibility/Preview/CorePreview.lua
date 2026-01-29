@@ -89,7 +89,7 @@ function FN.PRE.update_on_card_order_change(cardarea)
 	if G.STATE == G.STATES.HAND_PLAYED then return end
 
 	local prev_order = nil
-	if cardarea.config.type == "joker" and cardarea.cards[1].ability.set == "Joker" then
+	if cardarea.config.type == "joker" and cardarea.cards[1] and cardarea.cards[1].ability.set == "Joker" then
 		if cardarea.cards[1].edition and cardarea.cards[1].edition.mp_phantom then return end
 		-- Note that the consumables cardarea also has type 'joker' so must verify by checking first card.
 		prev_order = FN.PRE.joker_order
@@ -111,7 +111,7 @@ function FN.PRE.update_on_card_order_change(cardarea)
 	end
 
 	if should_update then
-		if cardarea.config.type == "joker" or cardarea.cards[1].ability.set == "Joker" then
+		if cardarea.config.type == "joker" or (cardarea.cards[1] and cardarea.cards[1].ability.set == "Joker") then
 			FN.PRE.joker_order = prev_order
 		elseif cardarea.config.type == "hand" then
 			FN.PRE.hand_order = prev_order

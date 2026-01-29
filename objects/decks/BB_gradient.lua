@@ -59,6 +59,7 @@ local function get_bp(joker)
 			key = G.jokers.cards[pos + 1] and G.jokers.cards[pos + 1].config.center.key or "NULL"
 			pos = pos + 1
 		elseif key == "j_brainstorm" then
+			if not G.jokers.cards[1] then return "NULL" end
 			key = G.jokers.cards[1].config.center.key
 			pos = 1
 		end
