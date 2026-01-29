@@ -275,7 +275,7 @@ function G.FUNCS.attention_text_realtime(args)
 				if args.cover_colour_l then args.cover_colour_l[4] = math.min(args.cover_colour_l[4], args.fade) end
 				if args.cover_colour_d then args.cover_colour_d[4] = math.min(args.cover_colour_d[4], args.fade) end
 				if args.backdrop_colour then args.backdrop_colour[4] = math.min(args.backdrop_colour[4], args.fade) end
-				args.colour[4] = math.min(args.colour[4], args.fade)
+				if args.colour then args.colour[4] = math.min(args.colour[4], args.fade) end
 				if args.fade <= 0 then
 					args.AT:remove()
 					return true
