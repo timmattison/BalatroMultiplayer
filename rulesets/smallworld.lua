@@ -150,14 +150,19 @@ function add_joker(joker, edition, silent, eternal)
 		local _pool = nil
 		local _pool_key = nil
 		local rarities = { [1] = 0, [2] = 0.9, [3] = 1, [4] = 1 }
-		if G.P_CENTERS[joker].set == "Joker" then
+		local center = G.P_CENTERS[joker]
+		if not center then
+			return add_joker_ref(joker, edition, silent, eternal)
+		end
+		if center.set == "Joker" then
+			local rarity = center.rarity
 			_pool, _pool_key = get_current_pool(
 				"Joker",
-				rarities[G.P_CENTERS[joker].rarity] or G.P_CENTERS[joker].rarity,
-				G.P_CENTERS[joker].rarity == 4 and true or false
+				rarity and (rarities[rarity] or rarity) or 0,
+				rarity == 4 and true or false
 			)
 		else
-			_pool, _pool_key = get_current_pool(G.P_CENTERS[joker].set, nil)
+			_pool, _pool_key = get_current_pool(center.set, nil)
 		end
 		local it = 1
 		local center = "UNAVAILABLE"

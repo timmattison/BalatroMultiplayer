@@ -60,11 +60,14 @@ local function get_transmutations_loc(card)
 	local done = false
 	local num = 0
 	local area = get_area(card)
+	if not area or not area.config then return {} end
 	local limit = area.config.card_limit
 	local pos = get_pos(card) or nil
 	local ret = {}
+	local set = card.config and card.config.center and card.config.center.set
+	if not set or not G.P_CENTER_POOLS[set] then return {} end
 	while not done do
-		for i, v in ipairs(G.P_CENTER_POOLS[card.config.center.set]) do
+		for i, v in ipairs(G.P_CENTER_POOLS[set]) do
 			if included(v.key) then
 				if num > 0 then
 					ret[#ret + 1] = {
@@ -95,8 +98,12 @@ local function mass_polymorph(area)
 	for _, card in ipairs(area) do
 		local done = false
 		local swap = 0
+		local set = card.config and card.config.center and card.config.center.set
+		if not set or not G.P_CENTER_POOLS[set] then
+			done = true
+		end
 		while not done do
-			for i, v in ipairs(G.P_CENTER_POOLS[card.config.center.set]) do
+			for i, v in ipairs(G.P_CENTER_POOLS[set]) do
 				if included(v.key) then
 					if swap == 1 then
 						card:set_ability(v)

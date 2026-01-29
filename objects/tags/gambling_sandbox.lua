@@ -36,9 +36,11 @@ SMODS.Tag({
 				-- count owned rare jokers to prevent duplicates
 				local rares_owned = { 0 }
 				for k, v in ipairs(G.jokers.cards) do
-					if v.config.center.rarity == 3 and not rares_owned[v.config.center.key] then
+					local rarity = v.config and v.config.center and v.config.center.rarity
+					local key = v.config and v.config.center and v.config.center.key
+					if rarity == 3 and key and not rares_owned[key] then
 						rares_owned[1] = rares_owned[1] + 1
-						rares_owned[v.config.center.key] = true
+						rares_owned[key] = true
 					end
 				end
 
