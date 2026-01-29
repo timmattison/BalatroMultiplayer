@@ -760,7 +760,9 @@ end
 FNSJ.simulate_blueprint = function(joker_obj, context)
 	local joker_to_mimic = nil
 	for idx, joker in ipairs(FN.SIM.env.jokers) do
-		if joker == joker_obj then joker_to_mimic = FN.SIM.env.jokers[idx + 1] end
+		if joker == joker_obj and idx < #FN.SIM.env.jokers then
+			joker_to_mimic = FN.SIM.env.jokers[idx + 1]
+		end
 	end
 	if joker_to_mimic then
 		context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1

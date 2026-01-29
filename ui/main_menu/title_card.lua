@@ -78,7 +78,7 @@ MP.title_card = nil
 function Add_custom_multiplayer_cards(change_context)
 	local only_mod_affecting_title_card = not has_mod_manipulating_title_card()
 
-	if only_mod_affecting_title_card then G.title_top.cards[1]:set_base(G.P_CARDS["S_A"], true) end
+	if only_mod_affecting_title_card and G.title_top.cards[1] then G.title_top.cards[1]:set_base(G.P_CARDS["S_A"], true) end
 
 	-- Credit to the Cryptid mod for the original code to add a card to the main menu
 	local title_card = create_card("Base", G.title_top, nil, nil, nil, nil)
